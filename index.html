@@ -283,7 +283,7 @@
       /* Sticky Side Navigation */
       .side-nav {
         position: fixed;
-        left: 20px;
+        right: 20px;
         top: 50%;
         transform: translateY(-50%);
         background: rgba(255, 255, 255, 0.95);
@@ -295,7 +295,14 @@
         max-height: 80vh;
         overflow-y: auto;
         width: 50px;
-        transition: width 0.3s ease;
+        transition: width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .side-nav.visible {
+        opacity: 1;
+        visibility: visible;
       }
 
       .side-nav:hover {
@@ -352,36 +359,7 @@
         transform: translateX(5px);
       }
 
-      /* Scroll to Top Button */
-      .scroll-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background: #FF6B35;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        transition: all 0.3s ease;
-      }
 
-      .scroll-top:hover {
-        background: #003153;
-        transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-      }
-
-      .scroll-top.visible {
-        display: flex;
-      }
 
       /* Mobile responsiveness */
       @media (max-width: 768px) {
@@ -433,11 +411,6 @@
         </ul>
       </div>
     </nav>
-
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll to top" aria-label="Scroll to top">
-      ↑
-    </button>
 
     <div class="cover-page">
       <div class="company-name">Save Energy Systems <span style="color: #FF6B35;">PRO</span></div>
@@ -2058,13 +2031,19 @@
     </ul>
 
     <script>
-      // Show/hide scroll to top button
+      // Show/hide side nav after cover page
       window.addEventListener('scroll', function() {
-        const scrollTop = document.querySelector('.scroll-top');
-        if (window.pageYOffset > 300) {
-          scrollTop.classList.add('visible');
+        const sideNav = document.querySelector('.side-nav');
+        const coverPage = document.querySelector('.cover-page');
+        const toc = document.querySelector('.toc');
+        
+        // Calculate the height of cover page + table of contents
+        const threshold = coverPage.offsetHeight + toc.offsetHeight;
+        
+        if (window.pageYOffset > threshold) {
+          sideNav.classList.add('visible');
         } else {
-          scrollTop.classList.remove('visible');
+          sideNav.classList.remove('visible');
         }
       });
 
